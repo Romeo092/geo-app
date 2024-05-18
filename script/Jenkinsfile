@@ -17,6 +17,15 @@ pipeline{
         sh 'mvn clean validate compile install test package'
         }
     }
+    stage ('quality-gate'){
+        steps{
+            timeout(time: 1, unit: 'HOURS'){
+                    waitForQualityGate abortPipeline: true
+                }
+        }
+
+        }
+
     stage('upload artifact'){
         steps{
             sh 'curl -uadmin:AP8gcgmmset5jeYChTJYDN6XmDd -T \
@@ -27,6 +36,7 @@ pipeline{
         }
    
         }
+        stage ('quality-gate')
     }
     
     }
